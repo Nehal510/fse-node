@@ -1,3 +1,6 @@
+/**
+ * @file Declares API for tuits related controller methods
+ */
 import {Request, Response} from "express";
 
 export default interface TuitController {

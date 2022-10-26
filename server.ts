@@ -7,6 +7,14 @@ import UserController from "./controllers/UserController";
 import TuitDao from "./daos/TuitDao";
 import TuitController from "./controllers/TuitController";
 import mongoose from "mongoose";
+import LikeDao from "./daos/LikeDao";
+import LikeController from "./controllers/LikeController";
+import FollowDao from "./daos/FollowDao";
+import FollowController from "./controllers/FollowController";
+import MessageDao from "./daos/MessageDao";
+import MessageController from "./controllers/MessageController";
+import BookmarkDao from "./daos/BookmarkDao";
+import BookmarkController from "./controllers/BookmarkController";
 const cors = require('cors')
 const app = express();
 app.use(cors());
@@ -28,6 +36,14 @@ const userController = new UserController(app, userDao);
 console.log('hello world')
 const tuitDao = new TuitDao();
 const tuitController = new TuitController(app, tuitDao);
+
+const likeController = LikeController.getInstance(app);
+const followController = FollowController.getInstance(app);
+const bookmarkController = BookmarkController.getInstance(app);
+const messageController = MessageController.getInstance(app);
+
+
+
 
 
 app.get('/', (req: Request, res: Response) =>

@@ -2,6 +2,9 @@ import AccountType from "./AccountType";
 import MaritalStatus from "./MaritalStatus";
 import Location from "./Location";
 
+/**
+ * The below represents user model and structure.
+ */
 export default class User {
     private id: string = '';
     private username: string = '';

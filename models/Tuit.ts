@@ -1,5 +1,8 @@
 import User from "./User";
 
+/**
+ * The below represents tuit model and structure.
+ */
 export default class Tuit {
     private id: string = '';
     private tuit: string = '';
