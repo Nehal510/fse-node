@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * The below represents tuit model and structure.
+ */
 class Tuit {
     constructor(id, tuit) {
         this.id = '';

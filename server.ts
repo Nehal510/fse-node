@@ -30,7 +30,7 @@ const options = {
     family: 4
 }
 
-mongoose.connect('mongodb://localhost:27017/tuiterdb', options);
+mongoose.connect(`mongodb+srv://nehal:fsea2@cluster0.mdwo1jk.mongodb.net/?retryWrites=true&w=majority` || 'mongodb://localhost:27017/tuiterdb', options);
 const userDao = new UserDao();
 const userController = new UserController(app, userDao);
 console.log('hello world')

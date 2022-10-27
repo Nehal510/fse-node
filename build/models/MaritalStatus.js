@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * The below represents marital status enum.
+ */
 var MaritalStatus;
 (function (MaritalStatus) {
     MaritalStatus["Married"] = "MARRIED";

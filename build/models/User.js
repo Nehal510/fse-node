@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const AccountType_1 = __importDefault(require("./AccountType"));
 const MaritalStatus_1 = __importDefault(require("./MaritalStatus"));
+/**
+ * The below represents user model and structure.
+ */
 class User {
     constructor(id, username, password) {
         this.id = '';

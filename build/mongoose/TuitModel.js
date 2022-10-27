@@ -5,5 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const TuitSchema_1 = __importDefault(require("./TuitSchema"));
+/**
+ * The below  variable  is used to create tuit model from its schema.
+ */
 const TuitModel = mongoose_1.default.model('TuitModel', TuitSchema_1.default);
 exports.default = TuitModel;
