@@ -70,5 +70,9 @@ export default class UserDao implements UserDaoI {
                 password: user.pass
             }});
     }
+
+    async deleteUserByUsername(uname: string): Promise<any>{
+        return await UserModel.deleteOne({username: uname})
+    }
 }
 
