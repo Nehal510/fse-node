@@ -9,7 +9,7 @@ const MaritalStatus_1 = __importDefault(require("./MaritalStatus"));
  * The below represents user model and structure.
  */
 class User {
-    constructor(id, username, password) {
+    constructor(id, username, password, email) {
         this.id = '';
         this.username = '';
         this.password = '';
@@ -27,6 +27,7 @@ class User {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
     }
     get uName() {
         return this.username;

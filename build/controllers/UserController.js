@@ -67,6 +67,8 @@ class UserController {
          */
         this.updateUser = (req, res) => this.userDao.updateUser(req.params.userid, req.body)
             .then(status => res.json(status));
+        this.deleteUserByUsername = (req, res) => this.userDao.deleteUserByUsername(req.params.uname)
+            .then(status => res.json(status));
         this.app = app;
         this.userDao = userDao;
         this.app.get('/users', this.findAllUsers);
@@ -74,6 +76,7 @@ class UserController {
         this.app.post('/users', this.createUser);
         this.app.delete('/users/:userid', this.deleteUser);
         this.app.put('/users/:userid', this.updateUser);
+        this.app.delete('/users/:uname', this.deleteUserByUsername);
     }
 }
 exports.default = UserController;

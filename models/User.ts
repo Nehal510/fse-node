@@ -20,10 +20,11 @@ export default class User {
     private dateOfBirth: Date | null = null;
     private joined: Date = new Date();
     private location: Location | null = null;
-    constructor(id: string, username: string, password: string) {
+    constructor(id: string, username: string, password: string, email: string) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.email = email;
     }
     get uName(){
         return this.username;

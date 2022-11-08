@@ -21,6 +21,7 @@ export default class UserDao implements UserDaoI {
                 userMongooseModel?._id.toString()??'',
                 userMongooseModel?.username??'',
                 userMongooseModel?.password??'',
+                userMongooseModel?.email??'',
             );
         });
         return userModels;
@@ -36,6 +37,7 @@ export default class UserDao implements UserDaoI {
             userMongooseModel?._id.toString()??'',
             userMongooseModel?.username??'',
             userMongooseModel?.password??'',
+            userMongooseModel?.email??'',
         );
     }
     /**
@@ -43,12 +45,13 @@ export default class UserDao implements UserDaoI {
      * @param user details will go in the body
      * @returns {Promise} User
      */
-    async createUser(user: User): Promise<User> {
+    async createUser(user: any): Promise<User> {
         const userMongooseModel = await UserModel.create(user);
         return new User(
             userMongooseModel?._id.toString()??'',
             userMongooseModel?.username??'',
             userMongooseModel?.password??'',
+            userMongooseModel?.email??'',
         );
     }
     /**
@@ -72,6 +75,8 @@ export default class UserDao implements UserDaoI {
     }
 
     async deleteUserByUsername(uname: string): Promise<any>{
+        console.log('dao.deleteUserByUsername')
+        console.log(uname)
         return await UserModel.deleteOne({username: uname})
     }
 }

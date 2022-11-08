@@ -29,7 +29,7 @@ const options = {
     socketTimeoutMS: 45000,
     family: 4
 };
-mongoose_1.default.connect('mongodb://localhost:27017/tuiterdb', options);
+mongoose_1.default.connect(`mongodb+srv://nehal:fsea2@cluster0.mdwo1jk.mongodb.net/?retryWrites=true&w=majority` || 'mongodb://localhost:27017/tuiterdb', options);
 const userDao = new UserDao_1.default();
 const userController = new UserController_1.default(app, userDao);
 console.log('hello world');

@@ -30,8 +30,8 @@ class UserDao {
             const userMongooseModels = yield UserModel_1.default.find();
             const userModels = userMongooseModels
                 .map((userMongooseModel) => {
-                var _a, _b, _c;
-                return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '');
+                var _a, _b, _c, _d;
+                return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '', (_d = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.email) !== null && _d !== void 0 ? _d : '');
             });
             return userModels;
         });
@@ -42,10 +42,10 @@ class UserDao {
      * @returns {Promise} any
      */
     findUserById(uid) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const userMongooseModel = yield UserModel_1.default.findById(uid);
-            return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '');
+            return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '', (_d = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.email) !== null && _d !== void 0 ? _d : '');
         });
     }
     /**
@@ -54,10 +54,10 @@ class UserDao {
      * @returns {Promise} User
      */
     createUser(user) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             const userMongooseModel = yield UserModel_1.default.create(user);
-            return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '');
+            return new User_1.default((_a = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.username) !== null && _b !== void 0 ? _b : '', (_c = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.password) !== null && _c !== void 0 ? _c : '', (_d = userMongooseModel === null || userMongooseModel === void 0 ? void 0 : userMongooseModel.email) !== null && _d !== void 0 ? _d : '');
         });
     }
     /**
@@ -81,6 +81,11 @@ class UserDao {
                     username: user.uName,
                     password: user.pass
                 } });
+        });
+    }
+    deleteUserByUsername(uname) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield UserModel_1.default.deleteOne({ username: uname });
         });
     }
 }
