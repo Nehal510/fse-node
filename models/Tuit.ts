@@ -17,4 +17,3 @@ export default class Tuit {
         return this.tuit;
     }
 }
-

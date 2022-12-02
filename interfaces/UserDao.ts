@@ -10,5 +10,6 @@ export default interface UserDao {
     updateUser(uid: string, user: User): Promise<any>;
     deleteUser(uid: string): Promise<any>;
     deleteUserByUsername(uname: string): Promise<any>;
+    findUserByUsername(uname: string): Promise<any>;
 }
 

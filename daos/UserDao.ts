@@ -9,6 +9,15 @@ import UserDaoI from "../interfaces/UserDao";
  * @class UserDao it implements the DAO for users resource
  */
 export default class UserDao implements UserDaoI {
+
+    private static userDao: UserDao | null =null;
+    public static getInstance = (): UserDao =>{
+        if(UserDao.userDao === null){
+            UserDao.userDao = new UserDao();
+        }
+        return UserDao.userDao;
+    }
+    private constructor() {}
     /**
      * Retrieves all the users in the collection
      * @returns {Promise} of User array
@@ -78,6 +87,10 @@ export default class UserDao implements UserDaoI {
         console.log('dao.deleteUserByUsername')
         console.log(uname)
         return await UserModel.deleteOne({username: uname})
+    }
+
+    async findUserByUsername(uname: string): Promise<any>{
+        return await UserModel.findOne({username:uname})
     }
 }
 

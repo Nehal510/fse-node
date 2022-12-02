@@ -9,6 +9,15 @@ import TuitDaoI from "../interfaces/TuitDao";
  * @class TuitDao it implements the DAO for tuits resource
  */
 export default class TuitDao implements TuitDaoI {
+    private static tuitDao: TuitDao | null =null;
+
+    public static getInstance = (): TuitDao =>{
+        if(TuitDao.tuitDao === null){
+            TuitDao.tuitDao = new TuitDao();
+        }
+        return TuitDao.tuitDao;
+    }
+    private constructor() {}
     /**
      * Retrieves all the tuits in the collection
      * @returns {Promise} of Tuit array
@@ -44,7 +53,7 @@ export default class TuitDao implements TuitDaoI {
     async createTuit(tuit: Tuit): Promise<Tuit> {
         const tuitMongooseModel = await TuitModel.create(tuit);
         return new Tuit(
-            tuitMongooseModel?._id??'',
+            tuitMongooseModel?._id.toString()??'',
             tuitMongooseModel?.tuit??'',
         );
     }
@@ -63,7 +72,7 @@ export default class TuitDao implements TuitDaoI {
      */
     async updateTuit(tid: string, tuit: Tuit): Promise<any> {
         return await TuitModel.updateOne({_id: tid}, {$set: {
-            tuit: tuit.tuits,
+                tuit: tuit.tuits,
             }});
     }
     /**
@@ -71,12 +80,18 @@ export default class TuitDao implements TuitDaoI {
      * @param uid of the user for whom the tuits need to be retrieved
      * @returns {Promise} of any type
      */
-    async findTuitsByUser(uid: string): Promise<any>{
+    /*async findTuitsByUser(uid: string): Promise<any>{
         const tuitMongooseModel = await TuitModel.findById(uid);
         return new Tuit(
             tuitMongooseModel?._id.toString()??'',
             tuitMongooseModel?.tuit??'',
         );
-    }
+    }*/
+
+    createTuitByUser = async(uid: string, tuit: Tuit): Promise<any> =>
+        TuitModel.create({...tuit, postedBy: uid})
+
+    findTuitsByUser = async(uid: string): Promise<Tuit[]> =>
+
 }
 

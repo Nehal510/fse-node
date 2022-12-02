@@ -4,6 +4,7 @@
 import {Request, Response, Express} from "express";
 import TuitDao from "../daos/TuitDao";
 import TuitControllerI from "../interfaces/TuitController";
+import Tuit from "../models/Tuit";
 
 /**
  * @class TuitController Implements RESTful Web service API for tuits resource.
@@ -27,18 +28,24 @@ import TuitControllerI from "../interfaces/TuitController";
  * RESTful Web service API for tuits resource
  */
 export default class TuitController implements TuitControllerI {
-    app: Express;
-    tuitDao: TuitDao;
-    constructor(app: Express, tuitDao: TuitDao) {
-        this.app = app;
-        this.tuitDao = tuitDao;
-        this.app.get('/tuits', this.findAllTuits);
-        this.app.get('/tuits/:tuitid', this.findTuitById);
-        this.app.post('/tuits', this.createTuit);
-        this.app.delete('/tuits/:tuitid', this.deleteTuit);
-        this.app.put('/tuits/:tuitid', this.updateTuit);
-        this.app.get('/tuits/:userid', this.findTuitsByUser);
+    private static tuitDao: TuitDao = TuitDao.getInstance();
+    private static tuitController: TuitController | null = null;
+
+    public static getInstance = (app: Express): TuitController => {
+        if (TuitController.tuitController === null) {
+            TuitController.tuitController = new TuitController();
+
+            app.get('/tuits', TuitController.tuitController.findAllTuits);
+            app.get('/tuits/:tuitid', TuitController.tuitController.findTuitById);
+            app.post('/tuits', TuitController.tuitController.createTuit);
+            app.delete('/tuits/:tuitid', TuitController.tuitController.deleteTuit);
+            app.put('/tuits/:tuitid', TuitController.tuitController.updateTuit);
+            app.get('/tuits/:userid', TuitController.tuitController.findTuitsByUser);
+            app.post('/tuits/:uid', TuitController.tuitController.createTuitByUser);
+        }
+        return TuitController.tuitController;
     }
+    private constructor() {}
     /**
      * Retrieves all the tuits in the database
      * @param {Request} req Represents request from client to find all the tuits
@@ -46,7 +53,7 @@ export default class TuitController implements TuitControllerI {
      * body formatted as JSON arrays containing the tuit objects
      */
     findAllTuits = (req: Request, res: Response) =>
-        this.tuitDao.findAllTuits()
+        TuitController.tuitDao.findAllTuits()
             .then(tuits => res.json(tuits));
     /**
      * Retrieves a tuit by id
@@ -56,7 +63,7 @@ export default class TuitController implements TuitControllerI {
      * body formatted as JSON arrays containing the tuit object
      */
     findTuitById = (req: Request, res: Response) =>
-        this.tuitDao.findTuitById(req.params.tuitid)
+        TuitController.tuitDao.findTuitById(req.params.tuitid)
             .then(tuit => res.json(tuit));
     /**
      * A tuit is created/posted by a user
@@ -67,7 +74,7 @@ export default class TuitController implements TuitControllerI {
      * database
      */
     createTuit = (req: Request, res: Response) =>
-        this.tuitDao.createTuit(req.body)
+        TuitController.tuitDao.createTuit(req.body)
             .then(tuit => res.json(tuit));
     /**
      * Deleting a tuit
@@ -77,7 +84,7 @@ export default class TuitController implements TuitControllerI {
      * on whether deleting the tuit was successful or not
      */
     deleteTuit = (req: Request, res: Response) =>
-        this.tuitDao.deleteTuit(req.params.tuitid)
+        TuitController.tuitDao.deleteTuit(req.params.tuitid)
             .then(status => res.json(status));
     /**
      * Update a specific tuit from the database
@@ -88,7 +95,7 @@ export default class TuitController implements TuitControllerI {
      * on whether updating the tuit was successful or not
      */
     updateTuit = (req: Request, res: Response) =>
-        this.tuitDao.updateTuit(req.params.findTuitById, req.body)
+        TuitController.tuitDao.updateTuit(req.params.findTuitById, req.body)
             .then(status => res.json(status));
     /**
      * Retrieves all tuits posted by a user
@@ -98,9 +105,32 @@ export default class TuitController implements TuitControllerI {
      * body formatted as JSON arrays containing the tuit objects that
      * are posted by a specific user
      */
-    findTuitsByUser = (req: Request, res: Response) =>
+    /*findTuitsByUser = (req: Request, res: Response) =>
         this.tuitDao.findTuitsByUser(req.params.userId)
             .then(tuit => res.json(tuit));
+*/
+    createTuitByUser = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        && req.session['profile'] ?
+            req.session['profile']._id :
+            req.params.uid;
+
+        TuitController.tuitDao
+            .createTuitByUser(userId, req.body)
+            .then((tuit) => res.json(tuit));
+    }
+
+    findTuitsByUser = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        && req.session['profile'] ?
+            req.session['profile']._id :
+            req.params.uid;
+
+        TuitController.tuitDao
+            .findTuitsByUser(userId)
+            .then((tuits) => res.json(tuits));
+    }
+
 
 }
 

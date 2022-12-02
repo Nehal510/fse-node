@@ -2,55 +2,58 @@
  * @file Implements an Express Node HTTP server.
  */
 import express, {Request, Response} from 'express';
-import UserDao from "./daos/UserDao";
-import UserController from "./controllers/UserController";
-import TuitDao from "./daos/TuitDao";
-import TuitController from "./controllers/TuitController";
 import mongoose from "mongoose";
-import LikeDao from "./daos/LikeDao";
-import LikeController from "./controllers/LikeController";
-import FollowDao from "./daos/FollowDao";
+import UserController from "./controllers/UserController";
+import TuitController from "./controllers/TuitController";
 import FollowController from "./controllers/FollowController";
-import MessageDao from "./daos/MessageDao";
-import MessageController from "./controllers/MessageController";
-import BookmarkDao from "./daos/BookmarkDao";
-import BookmarkController from "./controllers/BookmarkController";
+import LikeController from "./controllers/LikeController";
+// import DislikeController from "./controllers/DislikeController";
+import MessageController from './controllers/MessageController';
+import BookmarkController from './controllers/BookmarkController';
+import AuthenticationController from './controllers/AuthenticationController';
+import session from "express-session";
+
+//require('dotenv').config()
+const connectionString="mongodb+srv://nehal:fsea2@cluster0.mdwo1jk.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(connectionString);
+
 const cors = require('cors')
 const app = express();
-app.use(cors());
-app.use(express.json());
-
-const options = {
-    useNewUrlParser: true,
-//    useUnifiesTopology: true,
-    autoIndex: false,
-//    maxPollSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-    family: 4
+const corsOptions ={
+    origin:true,
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
 }
 
-mongoose.connect(`mongodb+srv://nehal:fsea2@cluster0.mdwo1jk.mongodb.net/?retryWrites=true&w=majority` || 'mongodb://localhost:27017/tuiterdb', options);
-const userDao = new UserDao();
-const userController = new UserController(app, userDao);
-console.log('hello world')
-const tuitDao = new TuitDao();
-const tuitController = new TuitController(app, tuitDao);
+let sess = {
+    secret: 'process.env.SECRET',
+    cookie: {
+        secure: false
+    },
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
+}
+app.use(cors(corsOptions));
+app.use(session(sess));
+app.use(express.json());
+if (process.env.ENV === 'PRODUCTION') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
 
-const likeController = LikeController.getInstance(app);
+const userController = UserController.getInstance(app);
+const tuitController = TuitController.getInstance(app);
+const likesController = LikeController.getInstance(app);
+// const dislikeController = DislikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
-
-
-
-
+AuthenticationController(app);
 
 app.get('/', (req: Request, res: Response) =>
-    res.send('Welcome to Foundation of Software Engineering!!!!'));
+    res.send('Im updating!!!!'));
 
-app.get('/hello', (req: Request, res: Response) =>
-    res.send('Welcome to Foundation of Software Engineering!'));
 
 /**
  * Start a server listening at port 4000 locally
@@ -58,3 +61,8 @@ app.get('/hello', (req: Request, res: Response) =>
  */
 const PORT = 4000;
 app.listen(process.env.PORT || PORT);
+
+
+
+
+
