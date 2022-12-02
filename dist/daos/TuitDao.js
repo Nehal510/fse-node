@@ -21,7 +21,12 @@ const TuitModel_1 = __importDefault(require("../mongoose/TuitModel"));
  * @class TuitDao it implements the DAO for tuits resource
  */
 class TuitDao {
-    constructor() { }
+    constructor() {
+        this.findTuitsByUser = (uid) => __awaiter(this, void 0, void 0, function* () {
+            console.log("PostedBy" + uid);
+            return yield TuitModel_1.default.find({ postedBy: uid }).populate('postedBy', 'username').exec();
+        });
+    }
     /**
      * Retrieves all the tuits in the collection
      * @returns {Promise} of Tuit array
@@ -58,7 +63,7 @@ class TuitDao {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             const tuitMongooseModel = yield TuitModel_1.default.create(tuit);
-            return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
+            return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
         });
     }
     /**
@@ -88,11 +93,16 @@ class TuitDao {
      * @param uid of the user for whom the tuits need to be retrieved
      * @returns {Promise} of any type
      */
-    findTuitsByUser(uid) {
-        var _a, _b;
+    /*async findTuitsByUser(uid: string): Promise<any>{
+        const tuitMongooseModel = await TuitModel.findById(uid);
+        return new Tuit(
+            tuitMongooseModel?._id.toString()??'',
+            tuitMongooseModel?.tuit??'',
+        );
+    }*/
+    createTuitByUser(uid, tuit) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tuitMongooseModel = yield TuitModel_1.default.findById(uid);
-            return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
+            return yield TuitModel_1.default.create(Object.assign(Object.assign({}, tuit), { postedBy: uid }));
         });
     }
 }

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import TuitSchema from "./TuitSchema";
+import Tuit from "../models/Tuit";
 
 /**
  * The below  variable  is used to create tuit model from its schema.

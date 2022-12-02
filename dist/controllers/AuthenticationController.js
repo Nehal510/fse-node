@@ -41,7 +41,9 @@ const AuthenticationController = (app) => {
     });
     const profile = (req, res) => {
         //@ts-ignore
+        //console.log(req.session);
         const profile = req.session['profile'];
+        //console.log(profile);
         if (profile) {
             res.json(profile);
         }

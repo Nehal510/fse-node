@@ -40,7 +40,7 @@ export default class TuitController implements TuitControllerI {
             app.post('/tuits', TuitController.tuitController.createTuit);
             app.delete('/tuits/:tuitid', TuitController.tuitController.deleteTuit);
             app.put('/tuits/:tuitid', TuitController.tuitController.updateTuit);
-            app.get('/tuits/:userid', TuitController.tuitController.findTuitsByUser);
+            app.get('/tuits/users/:uid', TuitController.tuitController.findTuitsByUser);
             app.post('/tuits/:uid', TuitController.tuitController.createTuitByUser);
         }
         return TuitController.tuitController;
@@ -120,15 +120,16 @@ export default class TuitController implements TuitControllerI {
             .then((tuit) => res.json(tuit));
     }
 
-    findTuitsByUser = (req: Request, res: Response) => {
+   findTuitsByUser = (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         && req.session['profile'] ?
             req.session['profile']._id :
             req.params.uid;
-
+        //console.log("Uid is" + req.params.uid);
         TuitController.tuitDao
             .findTuitsByUser(userId)
             .then((tuits) => res.json(tuits));
+
     }
 
 

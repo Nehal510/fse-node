@@ -8,7 +8,6 @@ class Tuit {
         this.id = '';
         this.tuit = '';
         this.postedOn = new Date();
-        this.postedBy = null;
         this.id = id;
         this.tuit = tuit;
     }

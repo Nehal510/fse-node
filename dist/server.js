@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const UserController_1 = __importDefault(require("./controllers/UserController"));
-// import TuitController from "./controllers/TuitController";
+const TuitController_1 = __importDefault(require("./controllers/TuitController"));
 const FollowController_1 = __importDefault(require("./controllers/FollowController"));
 const LikeController_1 = __importDefault(require("./controllers/LikeController"));
 // import DislikeController from "./controllers/DislikeController";
@@ -44,7 +44,7 @@ if (process.env.ENV === 'PRODUCTION') {
     sess.cookie.secure = true; // serve secure cookies
 }
 const userController = UserController_1.default.getInstance(app);
-// const tuitController = TuitController.getInstance(app);
+const tuitController = TuitController_1.default.getInstance(app);
 const likesController = LikeController_1.default.getInstance(app);
 // const dislikeController = DislikeController.getInstance(app);
 const followController = FollowController_1.default.getInstance(app);

@@ -33,7 +33,9 @@ const AuthenticationController = (app: Express) => {
 
     const profile = (req: Request, res: Response) => {
         //@ts-ignore
+        //console.log(req.session);
         const profile = req.session['profile'];
+        //console.log(profile);
         if (profile) {
             res.json(profile);
         } else {
