@@ -37,11 +37,18 @@ export default class LikeDao implements LikeDaoI {
      * @param uid of the user for whom the liked tuits have to be retrieved
      * @returns {Promise} of like array
      */
-    findAllTuitsLikedByUser = async (uid: string): Promise<Like[]> =>
+    findAllTuitsLikedByUser = async (uid) =>
         LikeModel
             .find({likedBy: uid})
-            .populate("tuit")
+            .populate({
+                path: "tuit",
+                populate: {
+                    path: "postedBy"
+                }
+            })
             .exec();
+
+
     /**
      * User likes a tuit
      * @param tid of the tuit which is getting liked
@@ -49,7 +56,11 @@ export default class LikeDao implements LikeDaoI {
      * @returns {Promise} of any
      */
     userLikesTuit = async (uid: string, tid: string): Promise<any> =>
-        LikeModel.create({tuit: tid, likedBy: uid});
+    {
+        console.log("In likes!")
+        await LikeModel.create({tuit: tid, likedBy: uid});
+    }
+
     /**
      * User unlikes a tuit
      * @param tid of the tuit which is getting unliked
@@ -57,6 +68,23 @@ export default class LikeDao implements LikeDaoI {
      * @returns {Promise} of any
      */
     userUnlikesTuit = async (uid: string, tid: string): Promise<any> =>
-        LikeModel.deleteOne({tuit: tid, likedBy: uid});
+    {
+        console.log("In unlikes!")
+        await LikeModel.deleteOne({tuit: tid, likedBy: uid});
+
+    }
+
+
+    findUserLikesTuit= async(uid:string, tid:string):Promise<Like>=> {
+        console.log("In findUserLikesTuit DAO");
+        return await LikeModel.findOne({tuit: tid, likedBy: uid});
+    }
+
+
+    countHowManyLikedTuit= async(tid:string):Promise<any> => {
+        console.log("In countHowManyLikedTuit DAO");
+        return await LikeModel.count({tuit: tid});
+    }
+
 }
 

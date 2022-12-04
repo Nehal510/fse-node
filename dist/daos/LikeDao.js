@@ -38,7 +38,12 @@ class LikeDao {
         this.findAllTuitsLikedByUser = (uid) => __awaiter(this, void 0, void 0, function* () {
             return LikeModel_1.default
                 .find({ likedBy: uid })
-                .populate("tuit")
+                .populate({
+                path: "tuit",
+                populate: {
+                    path: "postedBy"
+                }
+            })
                 .exec();
         });
         /**
@@ -47,14 +52,28 @@ class LikeDao {
          * @param uid of the user who is liking the tuit
          * @returns {Promise} of any
          */
-        this.userLikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () { return LikeModel_1.default.create({ tuit: tid, likedBy: uid }); });
+        this.userLikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () {
+            console.log("In likes!");
+            yield LikeModel_1.default.create({ tuit: tid, likedBy: uid });
+        });
         /**
          * User unlikes a tuit
          * @param tid of the tuit which is getting unliked
          * @param uid of the user who is unliking the tuit
          * @returns {Promise} of any
          */
-        this.userUnlikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () { return LikeModel_1.default.deleteOne({ tuit: tid, likedBy: uid }); });
+        this.userUnlikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () {
+            console.log("In unlikes!");
+            yield LikeModel_1.default.deleteOne({ tuit: tid, likedBy: uid });
+        });
+        this.findUserLikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () {
+            console.log("In findUserLikesTuit DAO");
+            return yield LikeModel_1.default.findOne({ tuit: tid, likedBy: uid });
+        });
+        this.countHowManyLikedTuit = (tid) => __awaiter(this, void 0, void 0, function* () {
+            console.log("In countHowManyLikedTuit DAO");
+            return yield LikeModel_1.default.count({ tuit: tid });
+        });
     }
 }
 exports.default = LikeDao;

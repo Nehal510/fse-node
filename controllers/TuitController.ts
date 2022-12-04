@@ -37,7 +37,7 @@ export default class TuitController implements TuitControllerI {
 
             app.get('/tuits', TuitController.tuitController.findAllTuits);
             app.get('/tuits/:tuitid', TuitController.tuitController.findTuitById);
-            app.post('/tuits', TuitController.tuitController.createTuit);
+            //app.post('/tuits', TuitController.tuitController.createTuit);
             app.delete('/tuits/:tuitid', TuitController.tuitController.deleteTuit);
             app.put('/tuits/:tuitid', TuitController.tuitController.updateTuit);
             app.get('/tuits/users/:uid', TuitController.tuitController.findTuitsByUser);
@@ -73,9 +73,9 @@ export default class TuitController implements TuitControllerI {
      * body formatted as JSON containing the new tuit that was inserted in the
      * database
      */
-    createTuit = (req: Request, res: Response) =>
+    /*createTuit = (req: Request, res: Response) =>
         TuitController.tuitDao.createTuit(req.body)
-            .then(tuit => res.json(tuit));
+            .then(tuit => res.json(tuit));*/
     /**
      * Deleting a tuit
      * @param {Request} req Represents request from client, including the

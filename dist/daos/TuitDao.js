@@ -12,10 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @file DAO RESTful Web service API for tuits resource
- */
-const Tuit_1 = __importDefault(require("../models/Tuit"));
 const TuitModel_1 = __importDefault(require("../mongoose/TuitModel"));
 /**
  * @class TuitDao it implements the DAO for tuits resource
@@ -33,13 +29,7 @@ class TuitDao {
      */
     findAllTuits() {
         return __awaiter(this, void 0, void 0, function* () {
-            const tuitMongooseModel = yield TuitModel_1.default.find();
-            const tuitModels = tuitMongooseModel
-                .map((tuitMongooseModel) => {
-                var _a, _b;
-                return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
-            });
-            return tuitModels;
+            return yield TuitModel_1.default.find();
         });
     }
     /**
@@ -48,10 +38,8 @@ class TuitDao {
      * @returns {Promise} of Tuit type
      */
     findTuitById(tid) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            const tuitMongooseModel = yield TuitModel_1.default.findById(tid);
-            return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
+            return yield TuitModel_1.default.findById(tid);
         });
     }
     /**
@@ -59,13 +47,6 @@ class TuitDao {
      * @param tuit details will go in the body
      * @returns {Promise} of Tuit type
      */
-    createTuit(tuit) {
-        var _a, _b;
-        return __awaiter(this, void 0, void 0, function* () {
-            const tuitMongooseModel = yield TuitModel_1.default.create(tuit);
-            return new Tuit_1.default((_a = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel._id.toString()) !== null && _a !== void 0 ? _a : '', (_b = tuitMongooseModel === null || tuitMongooseModel === void 0 ? void 0 : tuitMongooseModel.tuit) !== null && _b !== void 0 ? _b : '');
-        });
-    }
     /**
      * Deletes the tuit by id
      * @param tid of the tuit which needs to be deleted
@@ -83,9 +64,8 @@ class TuitDao {
      */
     updateTuit(tid, tuit) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield TuitModel_1.default.updateOne({ _id: tid }, { $set: {
-                    tuit: tuit.tuits,
-                } });
+            // @ts-ignore
+            return yield TuitModel_1.default.updateOne({ _id: tid }, { $set: tuit });
         });
     }
     /**
@@ -103,6 +83,17 @@ class TuitDao {
     createTuitByUser(uid, tuit) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield TuitModel_1.default.create(Object.assign(Object.assign({}, tuit), { postedBy: uid }));
+        });
+    }
+    updateLikes(tid, newStats) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log("In updateLikes DAO");
+            return TuitModel_1.default.updateOne({ _id: tid }, { $set: { stats: newStats } });
+        });
+    }
+    updateStats(tid, newStats) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return TuitModel_1.default.updateOne({ _id: tid }, { $set: { stats: newStats } });
         });
     }
 }

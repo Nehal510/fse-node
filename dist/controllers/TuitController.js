@@ -52,8 +52,9 @@ class TuitController {
          * body formatted as JSON containing the new tuit that was inserted in the
          * database
          */
-        this.createTuit = (req, res) => TuitController.tuitDao.createTuit(req.body)
-            .then(tuit => res.json(tuit));
+        /*createTuit = (req: Request, res: Response) =>
+            TuitController.tuitDao.createTuit(req.body)
+                .then(tuit => res.json(tuit));*/
         /**
          * Deleting a tuit
          * @param {Request} req Represents request from client, including the
@@ -114,7 +115,7 @@ TuitController.getInstance = (app) => {
         TuitController.tuitController = new TuitController();
         app.get('/tuits', TuitController.tuitController.findAllTuits);
         app.get('/tuits/:tuitid', TuitController.tuitController.findTuitById);
-        app.post('/tuits', TuitController.tuitController.createTuit);
+        //app.post('/tuits', TuitController.tuitController.createTuit);
         app.delete('/tuits/:tuitid', TuitController.tuitController.deleteTuit);
         app.put('/tuits/:tuitid', TuitController.tuitController.updateTuit);
         app.get('/tuits/users/:uid', TuitController.tuitController.findTuitsByUser);
