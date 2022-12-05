@@ -23,6 +23,9 @@ export default class Tuit {
     }
 }*/
 
+/**
+ * The below represents tuit model and structure.
+ */
 import User from "./User";
 export default class Tuit {
     tuit: string = '';

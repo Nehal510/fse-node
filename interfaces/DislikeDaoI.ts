@@ -1,3 +1,6 @@
+/**
+ * @file Declares API for Dislikes related data access object methods
+ */
 import Dislike from "../models/Dislike";
 
 export default interface DislikeDaoI {

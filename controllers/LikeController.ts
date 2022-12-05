@@ -88,6 +88,7 @@ export default class LikeController implements LikeControllerI {
     }
 
     /**
+     * This is for recording a like on a tuit by a user
      * @param {Request} req Represents request from client, including the
      * path parameters uid and tid representing the user that is liking the tuit
      * and the tuit being liked
@@ -100,6 +101,7 @@ export default class LikeController implements LikeControllerI {
             .then(likes => res.json(likes));
 
     /**
+     * This is for unliking a tuit by a user
      * @param {Request} req Represents request from client, including the
      * path parameters uid and tid representing the user that is unliking
      * the tuit and the tuit being unliked
@@ -110,6 +112,13 @@ export default class LikeController implements LikeControllerI {
         LikeController.likeDao.userUnlikesTuit(req.params.uid, req.params.tid)
             .then(status => res.send(status));
 
+    /**
+     * This is for finding if a specific user has liked a specific tuit or not
+     * @param {Request} req Represents request from client, including the
+     * path parameters uid and tid
+     * @param {Response} res Represents response to client, including status
+     * on whether the user likes that specific tuit
+     */
     findUserLikesTuit = (req: any, res: any) => {
         console.log("In findUserLikesTuit");
         const tid = req.params.tid;
@@ -121,10 +130,26 @@ export default class LikeController implements LikeControllerI {
             .then(likes => res.json(likes));
     }
 
+    /**
+     * This is for counting how many users have liked the tuit
+     * @param {Request} req Represents request from client, including the
+     * path parameter tid representing the tuit for which we
+     * have to calculate the number of users that have liked the tuit
+     * @param {Response} res Represents response to client, including how many
+     * users have liked that specific tuit
+     */
     countHowManyLikedTuit = (req: Request, res: Response) =>
         LikeController.likeDao.countHowManyLikedTuit(req.params.tid)
             .then(likes => res.json(likes));
 
+    /**
+     * This is for the toggling of the likes on the tuit and updating the tuit stats accordingly
+     * @param {Request} req Represents request from client, including the
+     * path parameters uid and tid representing the user that is liking or unliking the
+     * tuit and the tuit which is being liked or unliked
+     * @param {Response} res Represents response to client, including status
+     * of toggling the like and updating the tuit stats
+     */
     userTogglesTuitLikes = async (req: Request, res: Response) => {
         console.log("In toggles");
         const uid = req.params.uid;

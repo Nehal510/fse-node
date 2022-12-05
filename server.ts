@@ -13,7 +13,6 @@ import BookmarkController from './controllers/BookmarkController';
 import AuthenticationController from './controllers/AuthenticationController';
 import session from "express-session";
 
-//require('dotenv').config()
 const connectionString="mongodb+srv://nehal:fsea2@cluster0.mdwo1jk.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(connectionString);
 
@@ -21,7 +20,7 @@ const cors = require('cors')
 const app = express();
 const corsOptions ={
     origin:true,
-    credentials:true,            //access-control-allow-credentials:true
+    credentials:true,
     optionSuccessStatus:200
 }
 
@@ -38,8 +37,8 @@ app.use(cors(corsOptions));
 app.use(session(sess));
 app.use(express.json());
 if (process.env.ENV === 'PRODUCTION') {
-    app.set('trust proxy', 1) // trust first proxy
-    sess.cookie.secure = true // serve secure cookies
+    app.set('trust proxy', 1)
+    sess.cookie.secure = true
 }
 
 const userController = UserController.getInstance(app);
@@ -52,7 +51,7 @@ const messageController = MessageController.getInstance(app);
 AuthenticationController(app);
 
 app.get('/', (req: Request, res: Response) =>
-    res.send('Im updating!!!!'));
+    res.send("Welcome to FSE"));
 
 
 /**

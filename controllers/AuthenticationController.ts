@@ -1,3 +1,6 @@
+/**
+ * @file Controller RESTful Web service API for authentication
+ */
 import {Request, Response, Express} from "express";
 import UserDao from "../daos/UserDao";
 const bcrypt = require('bcrypt');
@@ -5,37 +8,48 @@ const saltRounds = bcrypt.genSaltSync(10);
 
 const AuthenticationController = (app: Express) => {
 
+    /**
+     * Creates singleton controller instance
+     * @param {Express} app Express instance to declare the RESTful Web service
+     * API
+     * @return AuthenticationController
+     */
     const userDao: UserDao = UserDao.getInstance()
 
 
 
+    /**
+     * For registering a new user
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the status
+     * whether the user has been successfully registered or not
+     */
     const signup = async (req: Request, res: Response) => {
         const newUser = req.body;
         const password = newUser.password;
         const hash = await bcrypt.hashSync(password, saltRounds);
-        console.log("line here")
         newUser.password = hash;
-        console.log("line 20",newUser)
         const existingUser = await userDao.findUserByUsername(req.body.username);
-        console.log("line 22",existingUser)
         if (existingUser) {
             res.sendStatus(403);
-            console.log("existing user")
             return;
         } else {
             const insertedUser = await userDao.createUser(newUser);
-            console.log("creating a new user")
             //@ts-ignore
             req.session['profile'] = insertedUser;
             res.json(insertedUser);
         }
     }
 
+    /**
+     * This is for fetching the profile of a logged in user
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the
+     * status of whether the profile has been fetched successfully or not
+     */
     const profile = (req: Request, res: Response) => {
         //@ts-ignore
-        //console.log(req.session);
         const profile = req.session['profile'];
-        //console.log(profile);
         if (profile) {
             res.json(profile);
         } else {
@@ -43,12 +57,24 @@ const AuthenticationController = (app: Express) => {
         }
     }
 
+    /**
+     * This is for logging out a user
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the
+     * status of whether a user has been successfully logged out or not
+     */
     const logout = (req: Request, res: Response) => {
         //@ts-ignore
         req.session.destroy();
         res.sendStatus(200);
     }
 
+    /**
+     * For logging in a registered user
+     * @param {Request} req Represents request from client
+     * @param {Response} res Represents response to client, including the
+     * status of whether a regsitered user has been successfully logged in or not
+     */
     const login = async (req: Request, res: Response) => {
         const user = req.body;
         const username = user.username;
@@ -67,20 +93,22 @@ const AuthenticationController = (app: Express) => {
             res.json(existingUser);
         } else {
             res.sendStatus(403);
-            console.log("Passwords do not match");
         }
     };
     /**
-     * @class AuthController Implements RESTful Web service API for authentication resource.
+     * @class AuthenticationController Implements RESTful Web service API for authentciation
      * Defines the following HTTP endpoints:
      * <ul>
-     *     <li>POST /auth/login to login to the app</li>
-     *     <li>POST /auth/profile to retrieve the profile of the user</li>
-     *     <li>POST /auth/logout to logout of the app</li>
-     *     <li>POST /auth/signup to signup a user for the app</li>
+     *     <li>POST /auth/login to login a registered user
+     *     </li>
+     *     <li>POST /auth/profile to fetch profile of a logged in user
+     *     </li>
+     *     <li>POST /auth/logout to logout a logged in user
+     *     </li>
+     *     <li>POST /auth/signup to signup or register a new user
+     *     </li>
      * </ul>
-     * @property {BookmarkDao} BookmarkDao Singleton DAO implementing bookmark CRUD operations
-     * @property {BookmarkController} BookmarkController Singleton controller implementing
+     * @property {AutheticationController} AuthenticationController Singleton controller implementing
      * RESTful Web service API
      */
     app.post("/auth/login", login);
