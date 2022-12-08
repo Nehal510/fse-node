@@ -63,6 +63,7 @@ class LikeController {
             });
         };
         /**
+         * This is for recording a like on a tuit by a user
          * @param {Request} req Represents request from client, including the
          * path parameters uid and tid representing the user that is liking the tuit
          * and the tuit being liked
@@ -73,6 +74,7 @@ class LikeController {
         this.userLikesTuit = (req, res) => LikeController.likeDao.userLikesTuit(req.params.uid, req.params.tid)
             .then(likes => res.json(likes));
         /**
+         * This is for unliking a tuit by a user
          * @param {Request} req Represents request from client, including the
          * path parameters uid and tid representing the user that is unliking
          * the tuit and the tuit being unliked
@@ -81,6 +83,13 @@ class LikeController {
          */
         this.userUnlikesTuit = (req, res) => LikeController.likeDao.userUnlikesTuit(req.params.uid, req.params.tid)
             .then(status => res.send(status));
+        /**
+         * This is for finding if a specific user has liked a specific tuit or not
+         * @param {Request} req Represents request from client, including the
+         * path parameters uid and tid
+         * @param {Response} res Represents response to client, including status
+         * on whether the user likes that specific tuit
+         */
         this.findUserLikesTuit = (req, res) => {
             console.log("In findUserLikesTuit");
             const tid = req.params.tid;
@@ -91,8 +100,24 @@ class LikeController {
             LikeController.likeDao.findUserLikesTuit(userId, tid)
                 .then(likes => res.json(likes));
         };
+        /**
+         * This is for counting how many users have liked the tuit
+         * @param {Request} req Represents request from client, including the
+         * path parameter tid representing the tuit for which we
+         * have to calculate the number of users that have liked the tuit
+         * @param {Response} res Represents response to client, including how many
+         * users have liked that specific tuit
+         */
         this.countHowManyLikedTuit = (req, res) => LikeController.likeDao.countHowManyLikedTuit(req.params.tid)
             .then(likes => res.json(likes));
+        /**
+         * This is for the toggling of the likes on the tuit and updating the tuit stats accordingly
+         * @param {Request} req Represents request from client, including the
+         * path parameters uid and tid representing the user that is liking or unliking the
+         * tuit and the tuit which is being liked or unliked
+         * @param {Response} res Represents response to client, including status
+         * of toggling the like and updating the tuit stats
+         */
         this.userTogglesTuitLikes = (req, res) => __awaiter(this, void 0, void 0, function* () {
             console.log("In toggles");
             const uid = req.params.uid;

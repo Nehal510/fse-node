@@ -66,10 +66,21 @@ class LikeDao {
             console.log("In unlikes!");
             yield LikeModel_1.default.deleteOne({ tuit: tid, likedBy: uid });
         });
+        /**
+         * To find if a specific user likes a tuit
+         * @param tid of the tuit in consideration
+         * @param uid of the user in consideration
+         * @returns {Promise} of like object
+         */
         this.findUserLikesTuit = (uid, tid) => __awaiter(this, void 0, void 0, function* () {
             console.log("In findUserLikesTuit DAO");
             return yield LikeModel_1.default.findOne({ tuit: tid, likedBy: uid });
         });
+        /**
+         * To count how may users have liked a tuit
+         * @param tid of the tuit in consideration
+         * @returns {Promise} of any
+         */
         this.countHowManyLikedTuit = (tid) => __awaiter(this, void 0, void 0, function* () {
             console.log("In countHowManyLikedTuit DAO");
             return yield LikeModel_1.default.count({ tuit: tid });

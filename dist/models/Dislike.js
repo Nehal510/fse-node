@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * The below represents dislike model and structure.
+ */
 class Dislike {
     constructor() {
         this.tuit = null;
